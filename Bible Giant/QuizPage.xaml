@@ -1,0 +1,147 @@
+﻿<Page
+    x:Class="Bible_Giant.QuizPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Bible_Giant"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data="using:Bible_Giant.DataModel"
+    xmlns:bind="using:WinRTMultibinding.Foundation.Data"
+    Style="{StaticResource LayoutGridStyle}">
+    
+    <!--DataContext="{Binding DefaultViewModel}"
+    d:DataContext="{Binding Questions[0], Source={d:DesignData Source=/DataModel/BibleGiantData.json, Type=data:BibleGiantDataSource}}"-->
+    
+    <Grid>
+        <ContentControl Tag="1" HorizontalAlignment="Center" IsEnabled="{Binding LifeLine, Converter={StaticResource LifeLineToIsEnabledConverter}}">
+            <StackPanel DataContext="{Binding Question}">
+                <StackPanel Margin="0,20,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Name="PhoneAFriendbtn" Click="PhoneAFriendbtn_Click" Content="FF" Style="{StaticResource ImageLabels}"></Button>
+                    <Button Name="AskdAudience" Click="AskdAudience_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Ellipse Width="40" Height="42" Fill="Orange"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Name="FiftyFifty" Click="FiftyFifty_Click">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Ellipse Width="40" Height="42" Fill="Orange"/>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+                <TextBlock Foreground="White" Margin="0,20,0,0" Text="{Binding Level}" TextAlignment="Center" FontSize="30"></TextBlock>
+                <Button Style="{StaticResource QuestionButtonStyle}" Content="{Binding Question}"></Button>
+                <StackPanel Margin="25,0,25,0" x:Name="OptionButtonStack">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource ResourceKey=ButtonStyle}"></Style>
+                    </StackPanel.Resources>
+                    <Button Tag="A:" Content="{Binding Options[0].Option}" Click="Option_Click"></Button>
+                    <Button Tag="B:" Content="{Binding Options[1].Option}" Click="Option_Click"></Button>
+                    <Button Tag="C:" Content="{Binding Options[2].Option}" Click="Option_Click"></Button>
+                    <Button Tag="D:" Content="{Binding Options[3].Option}" Click="Option_Click"></Button>
+                </StackPanel>
+            </StackPanel>
+        </ContentControl>
+
+        <ContentControl Tag="2" HorizontalAlignment="Center" Margin="20,180,20,80" VerticalAlignment="Top" Name="askdaudience_stack">
+            <bind:MultiBindingHelper.MultiBindings>
+                <bind:MultiBindingCollection>
+                    <bind:MultiBinding TargetProperty="Visibility" Converter="{StaticResource LifeLineToVisibilityConverter}">
+                        <bind:Binding Path="LifeLine"></bind:Binding>
+                        <bind:Binding ElementName="askdaudience_stack"  Path="Tag"></bind:Binding>
+                    </bind:MultiBinding>
+                </bind:MultiBindingCollection>
+            </bind:MultiBindingHelper.MultiBindings>
+            <Border Padding="2,0" Name="audience_grid" Background="Gray" Height="400" Width="320">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="4*"></RowDefinition>
+                        <RowDefinition Height="0.8*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" FontFamily="Cambria" Text="{Binding AudienceGrades[0], Converter={StaticResource PercentConverter}}" FontSize="25"></TextBlock>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25" Text="{Binding AudienceGrades[1], Converter={StaticResource PercentConverter}}"></TextBlock>
+                    <TextBlock Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25" Text="{Binding AudienceGrades[2], Converter={StaticResource PercentConverter}}"></TextBlock>
+                    <TextBlock Grid.Column="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25" Text="{Binding AudienceGrades[3], Converter={StaticResource PercentConverter}}"></TextBlock>
+                    
+                    <Rectangle Grid.Row="1" Fill="Purple" Margin="10,0" VerticalAlignment="Bottom">
+                        <bind:MultiBindingHelper.MultiBindings>
+                            <bind:MultiBindingCollection>
+                                <bind:MultiBinding TargetProperty="Height" Converter="{StaticResource AudienceSizeConverter}">
+                                    <bind:Binding Path="AudienceGrades[0]"></bind:Binding>
+                                    <bind:Binding ElementName="audience_grid"  Path="Height"></bind:Binding>
+                                </bind:MultiBinding>
+                            </bind:MultiBindingCollection>
+                        </bind:MultiBindingHelper.MultiBindings>
+                    </Rectangle>
+                    <Rectangle Grid.Row="1" Grid.Column="1" Fill="Purple" Margin="10,0" VerticalAlignment="Bottom">
+                        <bind:MultiBindingHelper.MultiBindings>
+                            <bind:MultiBindingCollection>
+                                <bind:MultiBinding TargetProperty="Height" Converter="{StaticResource AudienceSizeConverter}">
+                                    <bind:Binding Path="AudienceGrades[1]"></bind:Binding>
+                                    <bind:Binding ElementName="audience_grid"  Path="Height"></bind:Binding>
+                                </bind:MultiBinding>
+                            </bind:MultiBindingCollection>
+                        </bind:MultiBindingHelper.MultiBindings>
+                    </Rectangle>
+                    <Rectangle Grid.Row="1" Grid.Column="2" Fill="Purple" Margin="10,0" VerticalAlignment="Bottom">
+                        <bind:MultiBindingHelper.MultiBindings>
+                            <bind:MultiBindingCollection>
+                                <bind:MultiBinding TargetProperty="Height" Converter="{StaticResource AudienceSizeConverter}">
+                                    <bind:Binding Path="AudienceGrades[2]"></bind:Binding>
+                                    <bind:Binding ElementName="audience_grid"  Path="Height"></bind:Binding>
+                                </bind:MultiBinding>
+                            </bind:MultiBindingCollection>
+                        </bind:MultiBindingHelper.MultiBindings>
+                    </Rectangle>
+                    <Rectangle Grid.Row="1" Grid.Column="3" Fill="Purple" Margin="10,0" VerticalAlignment="Bottom">
+                        <bind:MultiBindingHelper.MultiBindings>
+                            <bind:MultiBindingCollection>
+                                <bind:MultiBinding TargetProperty="Height" Converter="{StaticResource AudienceSizeConverter}">
+                                    <bind:Binding Path="AudienceGrades[3]"></bind:Binding>
+                                    <bind:Binding ElementName="audience_grid"  Path="Height"></bind:Binding>
+                                </bind:MultiBinding>
+                            </bind:MultiBindingCollection>
+                        </bind:MultiBindingHelper.MultiBindings>
+                    </Rectangle>
+
+                    <TextBlock Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25">A</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25">B</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25">C</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25">D</TextBlock>
+                    
+                    <Button Grid.Row="3" Grid.ColumnSpan="4" Content="OK" HorizontalAlignment="Center" Name="askdaudience_ok_btn" Click="askdaudience_ok_btn_Click"></Button>
+                </Grid>
+            </Border>
+        </ContentControl>
+
+        <ContentControl Tag="3" Name="foneafriend" HorizontalAlignment="Center" Margin="20,180" VerticalAlignment="Top">
+            <bind:MultiBindingHelper.MultiBindings>
+                <bind:MultiBindingCollection>
+                    <bind:MultiBinding TargetProperty="Visibility" Converter="{StaticResource LifeLineToVisibilityConverter}">
+                        <bind:Binding Path="LifeLine"></bind:Binding>
+                        <bind:Binding ElementName="foneafriend"  Path="Tag"></bind:Binding>
+                    </bind:MultiBinding>
+                </bind:MultiBindingCollection>
+            </bind:MultiBindingHelper.MultiBindings>
+            <Border Background="Gray" Height="100" Width="320">
+                <StackPanel>
+                    <TextBlock Name="foneafriend_tb" HorizontalAlignment="Center" FontFamily="Cambria" FontSize="25" Text="{Binding FoneAFriendOption, Converter={StaticResource FafOptionConverter}}"></TextBlock>
+                    <Button Content="OK" HorizontalAlignment="Center" Name="foneafriend_ok_btn" Click="foneafriend_ok_btn_Click"></Button>
+                </StackPanel>
+            </Border>
+        </ContentControl>
+    </Grid>
+</Page>
